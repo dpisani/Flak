@@ -10,17 +10,41 @@ namespace Flak
     {
         public struct RenderDetails
         {
-            public Sprite Sprite;
-            public Vector2 Position;
-            public float Rotation;
-            public Vector2 Scale;
+            public Sprite Sprite { get; set; }
+            public Vector2 Position { get; set; }
+            public float Rotation { get; set; }
+            public Vector2 Scale { get; set; }
+            private int frame;
+            public int Frame
+            {
+                get { return frame; }
+                set
+                {
+                    frame = value;
+
+                    if (frame < 0)
+                        frame = Sprite.Frames - 1 - (frame % Sprite.Frames);
+                    if (frame >= Sprite.Frames)
+                        frame = (frame % Sprite.Frames);
+                }
+            }
 
             public RenderDetails(Sprite sprite, Vector2 position)
+                :this()
             {
+                this.frame = 0;
                 Sprite = sprite;
                 Position = position;
                 Rotation = 0;
                 Scale = new Vector2(1, 1);
+            }
+
+            public RenderDetails(Sprite sprite, Vector2 position, float rotation, Vector2 scale, int frame)
+                :this(sprite, position)
+            {
+                Rotation = rotation;
+                Scale = scale;
+                Frame = frame;
             }
         }
 
@@ -48,6 +72,13 @@ namespace Flak
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
 
+            GL.Enable(EnableCap.DepthTest);
+
+            //enable alpha blending
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+            //Define vertex format
             GL.VertexPointer(3, VertexPointerType.Float, 5 * sizeof(float), (IntPtr)(0));
             GL.TexCoordPointer(2, TexCoordPointerType.Float, 5 * sizeof(float), (IntPtr)(3 * sizeof(float)));
 
@@ -58,8 +89,6 @@ namespace Flak
             // We haven't uploaded mipmaps, so disable mipmapping (otherwise the texture will not appear).
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-           // GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)All.Modulate);
 
             GL.Enable(EnableCap.VertexArray);
         }
@@ -75,13 +104,15 @@ namespace Flak
             {
                 RenderDetails instance = renderInstances.Dequeue();
                 //get final position of the quad
-                Vector3 pos = new Vector3(instance.Sprite.Center.X + instance.Position.X, instance.Sprite.Center.Y + instance.Position.Y, 0);
+                Vector3 cen = new Vector3(instance.Sprite.Center.X, instance.Sprite.Center.Y, 0);
+                Vector3 pos = new Vector3(instance.Position.X, instance.Position.Y, 0);
                 //create the world matrix
+                Matrix4 cent = Matrix4.CreateTranslation(-cen);
                 Matrix4 scale = Matrix4.Scale(instance.Scale.X, instance.Scale.Y, 0);
                 Matrix4 rotation = Matrix4.CreateRotationZ(instance.Rotation);
                 Matrix4 translation = Matrix4.CreateTranslation(pos);
 
-                Matrix4 world = scale * rotation * translation;
+                Matrix4 world = cent * scale * rotation * translation;
 
                 //combine with the view to make modelview
                 Matrix4 modelview = world * view;
@@ -94,7 +125,7 @@ namespace Flak
                 instance.Sprite.BindResources();
 
                 //draw the textured quad
-                GL.DrawArrays(BeginMode.Quads, 0, 4);
+                GL.DrawArrays(BeginMode.Quads, instance.Frame * 4, 4);
             }
 
             GL.PopMatrix();

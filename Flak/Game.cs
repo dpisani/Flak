@@ -30,12 +30,10 @@ namespace Flak
             base.OnLoad(e);
 
             GL.ClearColor(0.1f, 0.2f, 0.5f, 0.0f);
-            GL.Enable(EnableCap.DepthTest);
 
-            //enable alpha blending
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
+            spritebatch = new SpriteBatch(ClientRectangle);
+            testSprite = new Sprite(Flak.Properties.Resources.test_sprite);
+            testSprite.Center = new Vector2(32, 32);
             
         }
 
@@ -62,6 +60,7 @@ namespace Flak
 
             if (Keyboard[Key.Escape])
                 Exit();
+
         }
 
         /// <summary>
@@ -72,20 +71,13 @@ namespace Flak
         {
             base.OnRenderFrame(e);
 
-            if (spritebatch == null)
-            {
-                spritebatch = new SpriteBatch(ClientRectangle);
-                testSprite = new Sprite(Flak.Properties.Resources.test_sprite);
-            }
-
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             spritebatch.Begin();
 
-            spritebatch.AddSprite(new SpriteBatch.RenderDetails(testSprite, new Vector2(100, 200)));
+            spritebatch.AddSprite(new SpriteBatch.RenderDetails(testSprite, new Vector2(300, 200), 0, Vector2.One, 0));
 
             spritebatch.End();
-
 
             SwapBuffers();
         }
