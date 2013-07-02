@@ -8,7 +8,7 @@ namespace Flak
 {
     public class SpriteBatch
     {
-        public struct RenderDetails
+        public class RenderDetails
         {
             public Sprite Sprite { get; set; }
             public Vector2 Position { get; set; }
@@ -22,15 +22,15 @@ namespace Flak
                 {
                     frame = value;
 
+                    //wrap out of range values
                     if (frame < 0)
-                        frame = Sprite.Frames - 1 - (frame % Sprite.Frames);
+                        frame = Sprite.Frames + (frame % Sprite.Frames);
                     if (frame >= Sprite.Frames)
                         frame = (frame % Sprite.Frames);
                 }
             }
 
             public RenderDetails(Sprite sprite, Vector2 position)
-                :this()
             {
                 this.frame = 0;
                 Sprite = sprite;
@@ -53,24 +53,30 @@ namespace Flak
         Matrix4 view;
         Matrix4 projection;
 
-        public SpriteBatch(System.Drawing.Rectangle viewportSize)
+        public SpriteBatch()
         {
             renderInstances = new Queue<RenderDetails>();
             view = Matrix4.LookAt(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
-            ConfigureProjection(viewportSize);
+            ConfigureProjection();
         }
 
-        public void ConfigureProjection (System.Drawing.Rectangle viewportSize)
+        public void ConfigureProjection()
         {
             //create orthographic projection since we're in 2d
-            projection = Matrix4.CreateOrthographicOffCenter(0, viewportSize.Width, viewportSize.Height, 0, -10, 1000);
+            int[] viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
+            projection = Matrix4.CreateOrthographicOffCenter(0, viewport[2], viewport[3], 0, -10, 1000);
         }
 
         public void Begin()
         {
-            GL.PushMatrix();
             GL.MatrixMode(MatrixMode.Projection);
+            GL.PushMatrix();
             GL.LoadMatrix(ref projection);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PushMatrix();
+            GL.LoadMatrix(ref view);
 
             GL.Enable(EnableCap.DepthTest);
 
@@ -100,12 +106,14 @@ namespace Flak
 
         public void End()
         {
+            GL.MatrixMode(MatrixMode.Modelview);
+
             while (renderInstances.Count > 0)
             {
                 RenderDetails instance = renderInstances.Dequeue();
                 //get final position of the quad
                 Vector3 cen = new Vector3(instance.Sprite.Center.X, instance.Sprite.Center.Y, 0);
-                Vector3 pos = new Vector3(instance.Position.X, instance.Position.Y, 0);
+                Vector3 pos = new Vector3((float)Math.Round(instance.Position.X), (float)Math.Round(instance.Position.Y), 0);
                 //create the world matrix
                 Matrix4 cent = Matrix4.CreateTranslation(-cen);
                 Matrix4 scale = Matrix4.Scale(instance.Scale.X, instance.Scale.Y, 0);
@@ -113,21 +121,22 @@ namespace Flak
                 Matrix4 translation = Matrix4.CreateTranslation(pos);
 
                 Matrix4 world = cent * scale * rotation * translation;
-
-                //combine with the view to make modelview
-                Matrix4 modelview = world * view;
-
-                //set matrix
-                GL.MatrixMode(MatrixMode.Modelview);
-                GL.LoadMatrix(ref modelview);
+          
+                GL.PushMatrix();
+                GL.MultMatrix(ref world);
 
                 //set sprite buffers and texture
                 instance.Sprite.BindResources();
 
                 //draw the textured quad
                 GL.DrawArrays(BeginMode.Quads, instance.Frame * 4, 4);
+
+                GL.PopMatrix();
             }
 
+            //return matrix state to the state it was at begin       
+            GL.PopMatrix();
+            GL.MatrixMode(MatrixMode.Projection);
             GL.PopMatrix();
         }
     }

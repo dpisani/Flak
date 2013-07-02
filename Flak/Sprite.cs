@@ -30,7 +30,7 @@ namespace Flak
 
         public int Frames { get; private set; }
 
-        public Sprite(Bitmap image, int verticalSegments = 1, int horizontalSegments = 1)
+        public Sprite(Bitmap image, Vector2 center, int horizontalSegments, int verticalSegments, int frames)
         {
             if (image == null || verticalSegments <= 0 || horizontalSegments <= 0)
                 throw new ArgumentException();
@@ -38,8 +38,28 @@ namespace Flak
             Width = image.Width / horizontalSegments;
             Height = image.Height / verticalSegments;
 
-            Frames = verticalSegments * horizontalSegments;
-   
+            Frames = frames;
+            Center = center;
+
+            CreateSpriteResources(image, horizontalSegments, verticalSegments);
+        }
+
+        public Sprite(Bitmap image)
+        {
+            if (image == null)
+                throw new ArgumentException();
+
+            Width = image.Width;
+            Height = image.Height;
+
+            Frames = 1;
+            Center = Vector2.Zero;
+
+            CreateSpriteResources(image, 1, 1);
+        }
+
+        private void CreateSpriteResources(Bitmap image, int horizontalSegments, int verticalSegments)
+        {
             //create a new texture
             GL.GenTextures(1, out texID);
             GL.BindTexture(TextureTarget.Texture2D, texID);
@@ -60,11 +80,10 @@ namespace Flak
             float uSize = 1 / (float)horizontalSegments;
             float vSize = 1 / (float)verticalSegments;
             Vertex[] vertices = new Vertex[4 * Frames];
+            int i = 0;
             for (int v = 0; v < verticalSegments; v++)
-                for (int u = 0; u < horizontalSegments; u++)
+                for (int u = 0; u < horizontalSegments && i < Frames; u++, i++)
                 {
-                    int i = v * horizontalSegments + u;
-
                     vertices[i * 4].Position = new Vector3(0, 0, 0);
                     vertices[i * 4].TexCoord = new Vector2(uSize * u, vSize * v);
 

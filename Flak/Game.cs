@@ -1,4 +1,3 @@
-// Released to the public domain. Use, modify and relicense at will.
 
 using System;
 
@@ -14,7 +13,7 @@ namespace Flak
     class Game : GameWindow
     {
         SpriteBatch spritebatch;
-        Sprite testSprite;
+        Player player;
         /// <summary>Creates a 800x600 window with the specified title.</summary>
         public Game()
             : base(800, 600, GraphicsMode.Default, "Flak")
@@ -31,10 +30,8 @@ namespace Flak
 
             GL.ClearColor(0.1f, 0.2f, 0.5f, 0.0f);
 
-            spritebatch = new SpriteBatch(ClientRectangle);
-            testSprite = new Sprite(Flak.Properties.Resources.test_sprite);
-            testSprite.Center = new Vector2(32, 32);
-            
+            spritebatch = new SpriteBatch();
+            player = new Player(new Vector2(200, 200), Keyboard);
         }
 
         /// <summary>
@@ -46,8 +43,10 @@ namespace Flak
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-
+            //reset the viewport
             GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
+            //set up the projection matrix
+            spritebatch.ConfigureProjection();
         }
 
         /// <summary>
@@ -61,6 +60,7 @@ namespace Flak
             if (Keyboard[Key.Escape])
                 Exit();
 
+            player.Update();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Flak
 
             spritebatch.Begin();
 
-            spritebatch.AddSprite(new SpriteBatch.RenderDetails(testSprite, new Vector2(300, 200), 0, Vector2.One, 0));
+            player.Draw(spritebatch);
 
             spritebatch.End();
 
