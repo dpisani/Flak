@@ -9,10 +9,12 @@ using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using OpenTK.Input;
 
-namespace StarterKit
+namespace Flak
 {
     class Game : GameWindow
     {
+        SpriteBatch spritebatch;
+        Sprite testSprite;
         /// <summary>Creates a 800x600 window with the specified title.</summary>
         public Game()
             : base(800, 600, GraphicsMode.Default, "Flak")
@@ -33,6 +35,8 @@ namespace StarterKit
             //enable alpha blending
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+            
         }
 
         /// <summary>
@@ -46,17 +50,6 @@ namespace StarterKit
             base.OnResize(e);
 
             GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
-
-            //create orthographic projection since we're in 2d
-            Matrix4 projection = Matrix4.CreateOrthographicOffCenter(0, ClientRectangle.Width, ClientRectangle.Height, 0, -10, 1000);
-
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref projection);
-
-            //make the camera point the right way
-            Matrix4 modelview = Matrix4.LookAt(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref modelview);
         }
 
         /// <summary>
@@ -79,15 +72,20 @@ namespace StarterKit
         {
             base.OnRenderFrame(e);
 
+            if (spritebatch == null)
+            {
+                spritebatch = new SpriteBatch(ClientRectangle);
+                testSprite = new Sprite(Flak.Properties.Resources.test_sprite);
+            }
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.Begin(BeginMode.Triangles);
+            spritebatch.Begin();
 
-            GL.Color4(1.0f, 1.0f, 0.0f, 1); GL.Vertex3(10.0f, 10.0f, 1.0f);
-            GL.Color4(1.0f, 0.0f, 0.0f, 0.5f); GL.Vertex3(100.0f, 1.0f, 1.0f);
-            GL.Color4(0.2f, 0.9f, 1.0f, 0); GL.Vertex3(0.0f, 100.0f, 1.0f);
+            spritebatch.AddSprite(new SpriteBatch.RenderDetails(testSprite, new Vector2(100, 200)));
 
-            GL.End();
+            spritebatch.End();
+
 
             SwapBuffers();
         }
