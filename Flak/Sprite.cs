@@ -57,7 +57,7 @@ namespace Flak
 
             CreateSpriteResources(image, 1, 1);
         }
-
+        uint va;
         private void CreateSpriteResources(Bitmap image, int horizontalSegments, int verticalSegments)
         {
             //create a new texture
@@ -75,6 +75,7 @@ namespace Flak
             image.UnlockBits(data);
 
             //make vertex buffer
+            GL.GenVertexArrays(1, out va);
             GL.GenBuffers(1, out VBOid);
             //textured quads, one for each frame
             float uSize = 1 / (float)horizontalSegments;
@@ -99,12 +100,19 @@ namespace Flak
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBOid);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * 5 * sizeof(float)), vertices, BufferUsageHint.StaticDraw);
+
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
         }
 
-        public void BindResources()
+        public void BindTexture()
+        {     
+            GL.BindTexture(TextureTarget.Texture2D, texID);        
+        }
+
+        public void BindBuffer()
         {
-            GL.BindTexture(TextureTarget.Texture2D, texID);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBOid);
+            GL.BindVertexArray(va);
         }
 
         public void Dispose()

@@ -1,0 +1,14 @@
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\Flak.exe.config
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\Flak.exe.manifest
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\Flak.application
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\Flak.exe
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\Flak.pdb
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\OpenTK.dll
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Release\OpenTK.xml
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.Properties.Resources.resources
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.csproj.GenerateResource.Cache
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.exe.manifest
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.application
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.exe
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.pdb
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Release\Flak.csprojResolveAssemblyReference.cache

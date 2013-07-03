@@ -9,6 +9,20 @@ namespace Flak
 {
     public abstract class Entity
     {
+        protected EntityManager Manager { get; set; }
+
+        protected static Random random { get; set; }
+
+        static Entity()
+        {
+            random = new Random();
+        }
+
+        public Entity(EntityManager manager)
+        {
+            Manager = manager;
+        }
+
         protected SpriteBatch.RenderDetails DrawParams { get; set; }
 
         public Vector2 Position

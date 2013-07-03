@@ -8,3 +8,7 @@ C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Debug\Flak.exe
 C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Debug\Flak.pdb
 C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Debug\Flak.Properties.Resources.resources
 C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Debug\Flak.csproj.GenerateResource.Cache
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Debug\Flak.exe.manifest
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\bin\Debug\Flak.application
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Debug\Flak.exe.manifest
+C:\Users\Dean\Documents\Visual Studio 2012\Projects\Flak\Flak\obj\Debug\Flak.application

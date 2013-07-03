@@ -10,10 +10,12 @@ using OpenTK.Input;
 
 namespace Flak
 {
-    class Game : GameWindow
+    public class Game : GameWindow
     {
-        SpriteBatch spritebatch;
-        Player player;
+        public SpriteBatch Spritebatch { get; set; }
+
+        private GameState GameState { get; set; }
+
         /// <summary>Creates a 800x600 window with the specified title.</summary>
         public Game()
             : base(800, 600, GraphicsMode.Default, "Flak")
@@ -28,10 +30,11 @@ namespace Flak
         {
             base.OnLoad(e);
 
-            GL.ClearColor(0.1f, 0.2f, 0.5f, 0.0f);
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-            spritebatch = new SpriteBatch();
-            player = new Player(new Vector2(200, 200), Keyboard);
+            Spritebatch = new SpriteBatch();
+
+            GameState = new MainGameState(this);
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace Flak
             //reset the viewport
             GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
             //set up the projection matrix
-            spritebatch.ConfigureProjection();
+            Spritebatch.ConfigureProjection();
         }
 
         /// <summary>
@@ -60,7 +63,7 @@ namespace Flak
             if (Keyboard[Key.Escape])
                 Exit();
 
-            player.Update();
+            GameState.Update();
         }
 
         /// <summary>
@@ -73,11 +76,8 @@ namespace Flak
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            spritebatch.Begin();
+            GameState.Draw();
 
-            player.Draw(spritebatch);
-
-            spritebatch.End();
 
             SwapBuffers();
         }

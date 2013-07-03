@@ -71,14 +71,10 @@ namespace Flak
         public void Begin()
         {
             GL.MatrixMode(MatrixMode.Projection);
-            GL.PushMatrix();
             GL.LoadMatrix(ref projection);
 
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.PushMatrix();
-            GL.LoadMatrix(ref view);
-
             GL.Enable(EnableCap.DepthTest);
+            GL.Disable(EnableCap.CullFace);
 
             //enable alpha blending
             GL.Enable(EnableCap.Blend);
@@ -106,8 +102,6 @@ namespace Flak
 
         public void End()
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-
             while (renderInstances.Count > 0)
             {
                 RenderDetails instance = renderInstances.Dequeue();
@@ -121,23 +115,18 @@ namespace Flak
                 Matrix4 translation = Matrix4.CreateTranslation(pos);
 
                 Matrix4 world = cent * scale * rotation * translation;
-          
-                GL.PushMatrix();
-                GL.MultMatrix(ref world);
+                Matrix4 modelview = world * view;
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.LoadMatrix(ref modelview);
 
                 //set sprite buffers and texture
-                instance.Sprite.BindResources();
-
+                instance.Sprite.BindTexture();
+                instance.Sprite.BindBuffer();
+               
                 //draw the textured quad
                 GL.DrawArrays(BeginMode.Quads, instance.Frame * 4, 4);
-
-                GL.PopMatrix();
-            }
-
-            //return matrix state to the state it was at begin       
-            GL.PopMatrix();
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.PopMatrix();
+            }           
+            GL.Disable(EnableCap.VertexArray);
         }
     }
 }

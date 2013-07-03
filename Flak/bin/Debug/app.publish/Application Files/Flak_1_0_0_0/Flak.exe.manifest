@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="Flak.exe" version="1.0.0.0" publicKeyToken="61b2554a8a15aa1f" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="Flak" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="Flak.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Flak.exe" size="16384">
+      <assemblyIdentity name="Flak" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>wlu737zeMlWrI2vLPe1PM0T6r+EoFGojnWohK4h3i+U=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenTK.dll" size="2719744">
+      <assemblyIdentity name="OpenTK" version="1.0.0.0" publicKeyToken="BAD199FE84EB3DF4" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>kx44tHuCTDFqVbWlTVVlDJeMqQ3eHa6gIpnt3ZTnGcA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Flak.exe.config" size="187">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xm4bo26HQ0LNVwz1vdPYtzhkpMnp2AI5i+f0b+OahTI=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=Axel\Dean" issuerKeyHash="346c61c74b505eec25b122f44c0ca59b07e82ca0" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>cHBGcv6maRKS4mr8T4TwFjv2tcMl4A8lBQk1ZDHljV0=</DigestValue></Reference></SignedInfo><SignatureValue>LsyXvH0Y6GLbbr9MEkPJ6SA+nVF2CJzrfLN3Wu6uT7lxcz9ZfWxfXSTj7uNmrpxRb6m+JMOiApQszzvwx9iRy/uDI1iOVc5Yy6L+aXktiskAmSWsYQpsNbHI90WRnI5w363YrMSaWB228Y5V+fRZdF4K2rK7WqS4AXgI/b1DjMU=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>lEj5iR98m1+N9TwLsmCn+jl0VSOGK83JNN+2a7kKUDWD3P/+40JdVS4k49pGIZXSbMuv8lahp1HiKc9q5tc65pZ+z/5/yLybSl8FJs1j+74s5/p/wT6E78Sx3S7iRpm9ZJ1hfVqIXEqNSXXQ3+A5euVuiOMEavbAMuJyIqCHzek=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="5d8de53164350905250fe025c3b5f63b16f0844ffc6ae2921269a6fe72467070" Description="" Url=""><as:assemblyIdentity name="Flak.exe" version="1.0.0.0" publicKeyToken="61b2554a8a15aa1f" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Axel\Dean</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>ZXGUCF+WEXaBjoflzErSau0Z8YLd6sxbZfknhoXahjM=</DigestValue></Reference></SignedInfo><SignatureValue>cMFePZoCEWKaWlPZp43BkA4nyeTaM34+6jYvzNd+HOJoql52hPbojaJaZAL+Ku2E2Gs/pEekYc765xZtQTWjXOtVWqt4OsadI6NRgcsJNyTjfOj4QYkY3oLKjylqfYekoBWIKgZJS7/s+CdgRSmXexQslXBrZXrjv7QTJjKmzok=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>lEj5iR98m1+N9TwLsmCn+jl0VSOGK83JNN+2a7kKUDWD3P/+40JdVS4k49pGIZXSbMuv8lahp1HiKc9q5tc65pZ+z/5/yLybSl8FJs1j+74s5/p/wT6E78Sx3S7iRpm9ZJ1hfVqIXEqNSXXQ3+A5euVuiOMEavbAMuJyIqCHzek=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIBvTCCASagAwIBAgIQGFavTJi6nK5Gk0OW+fSX4zANBgkqhkiG9w0BAQsFADAdMRswGQYDVQQDHhIAQQB4AGUAbABcAEQAZQBhAG4wHhcNMTMwNzAyMTE1OTA5WhcNMTQwNzAyMTc1OTA5WjAdMRswGQYDVQQDHhIAQQB4AGUAbABcAEQAZQBhAG4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAJRI+YkffJtfjfU8C7Jgp/o5dFUjhivNyTTftmu5ClA1g9z//uNCXVUuJOPaRiGV0mzLr/JWoadR4inPaubXOuaWfs/+f8i8m0pfBSbNY/u+LOf6f8E+hO/Esd0u4kaZvWSdYX1aiFxKjUl10N/gOXrlbojjBGr2wDLiciKgh83pAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAKmkTQAyb1jz0Cds4QTQwHntSJEN9EkywWDopDsNLfd7Uo+WiLyx2uyk/HoAJb3DX6DKgKxqAD4G0sb6rONb6Gx9Tgw9Dv1uz/5Pfl25jrAMCb6ZskMY4B4DEt5T/gAghwynzgQ4yb5AHhLXiogGb/uiooTClIAdV+GVFKbOUPzk=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
