@@ -64,7 +64,7 @@ namespace Flak
                     angleCharge = 0;
             }
         }
-        const float maxAngle = (float)Math.PI * 0.5f;
+        const float maxAngle = (float)Math.PI * 0.8f;
         const float minAngle = (float)Math.PI * 0.05f;
 
 
@@ -133,20 +133,23 @@ namespace Flak
                 Velocity = Vector2.Normalize(Velocity);
                 Velocity *= maxSpeed;
             }
-            Position += Velocity;
+
+            int[] area = new int[4];
+            GL.GetInteger(GetPName.Viewport, area);
+            Vector2 pos = Position + Velocity;
+            Vector2 mov = Velocity;
+            if (pos.X < area[0] || pos.X > area[2])
+                mov.X = 0;
+            if (pos.Y < area[1] || pos.Y > area[3])
+                mov.Y = 0;
+
+            Position += mov;
         }
 
         private void UpdateWeapons()
         {
             //if weapon fired cause a delay
             WeaponCooloff--;
-
-            //check if the left button is pressed
-            if (IsMousePressed)
-            {
-                //charge the weapon
-                AngleCharge += 0.1f;
-            }
 
             //check if the mouse button is released
             if (IsMouseReleased)
@@ -162,6 +165,15 @@ namespace Flak
                     WeaponCooloff = cooloffPeriod;
                 }
             }
+
+            //check if the left button is pressed
+            if (IsMousePressed && WeaponCooloff == 0)
+            {
+                //charge the weapon
+                AngleCharge += 0.05f;
+            }
+            else
+                AngleCharge = 0;
         }
 
         const float maxBulletSpeed = 17;
@@ -188,6 +200,37 @@ namespace Flak
                 //make bullet
                 Manager.Add(new Bullet(Position + Orientation*shipLength, dir*speed, Manager));
             }
+        }
+
+        static float arcDrawRad = 100.0f;
+        static int arcDrawSegments = 10;
+
+        public void DrawOverlay()
+        {
+            if (AngleCharge == 0)
+                return;
+
+            GL.Disable(EnableCap.Texture2D);
+
+            //draw the weapon angle         
+            Vector2 center = Position + Orientation * shipLength;
+            GL.Begin(BeginMode.TriangleFan);
+            GL.Color4(1.0f, 1.0f, 1.0f, AngleCharge * 0.3f);
+            GL.Vertex3(center.X, center.Y, 1);
+
+            float angleRange = maxAngle - (maxAngle - minAngle) * AngleCharge;
+            float angledif = angleRange / (float)arcDrawSegments;
+            float angleStart = (float)Math.Atan2(Orientation.Y, Orientation.X) - angleRange / 2.0f;
+            GL.Color4(1.0f, 1.0f, 1.0f, AngleCharge * 0.1f);
+            for (int i = 0; i < arcDrawSegments; i++)
+            {
+                float angle = angleStart + angledif * i;
+                Vector2 v = center + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle))*arcDrawRad;
+                GL.Vertex3(v.X, v.Y, 1);
+            }
+            GL.End();
+
+            GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 }

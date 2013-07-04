@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
 
 namespace Flak
 {
@@ -30,19 +31,34 @@ namespace Flak
 
             foreach (Entity entity in Entities)
                 entity.Update();
+
+            ManageCollisions();
         }
 
         public void Draw(SpriteBatch spritebatch)
         {
-
-
             foreach (Entity entity in Entities)
             {
-                spritebatch.Begin();
                 entity.Draw(spritebatch);
-
-                spritebatch.End();
+                spritebatch.Draw();
             }
+        }
+
+        public void ManageCollisions()
+        {
+            for (int i = 0; i < Entities.Count; i++)
+                for (int j = 0; j < Entities.Count; j++)
+                {
+                    //use bounding circle collision
+                    Entity a = Entities[i];
+                    Entity b = Entities[j];
+
+                    if (a.DoesCollide(b))
+                    {
+                        a.HandleCollision(b);
+                        b.HandleCollision(a);
+                    }
+                }
         }
 
         public void Add(Entity entity)

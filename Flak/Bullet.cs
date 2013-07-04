@@ -39,7 +39,7 @@ namespace Flak
                 size = 0.5f;
             DrawParams = new SpriteBatch.RenderDetails(BulletSprite, position, 0, Vector2.One*size, 0);
             Velocity = velocity;
-            Lifetime = 100;
+            Lifetime = 80;
         }
 
         public override void Update()

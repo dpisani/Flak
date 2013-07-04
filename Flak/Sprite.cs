@@ -101,7 +101,7 @@ namespace Flak
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBOid);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * 5 * sizeof(float)), vertices, BufferUsageHint.StaticDraw);
 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+            
         }
 
         public void BindTexture()
@@ -111,6 +111,7 @@ namespace Flak
 
         public void BindBuffer()
         {
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBOid);
             GL.BindVertexArray(va);
         }

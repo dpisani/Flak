@@ -68,10 +68,24 @@ namespace Flak
             projection = Matrix4.CreateOrthographicOffCenter(0, viewport[2], viewport[3], 0, -10, 1000);
         }
 
-        public void Begin()
+        public void ApplyViewProjection()
         {
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadMatrix(ref view);
+        }
+
+        private void SetState()
+        {
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PushMatrix();
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PushMatrix();
+
+            ApplyViewProjection();
 
             GL.Enable(EnableCap.DepthTest);
             GL.Disable(EnableCap.CullFace);
@@ -100,8 +114,11 @@ namespace Flak
             renderInstances.Enqueue(details);
         }
 
-        public void End()
+        public void Draw()
         {
+            SetState();
+
+            GL.MatrixMode(MatrixMode.Modelview);
             while (renderInstances.Count > 0)
             {
                 RenderDetails instance = renderInstances.Dequeue();
@@ -115,18 +132,24 @@ namespace Flak
                 Matrix4 translation = Matrix4.CreateTranslation(pos);
 
                 Matrix4 world = cent * scale * rotation * translation;
-                Matrix4 modelview = world * view;
-                GL.MatrixMode(MatrixMode.Modelview);
-                GL.LoadMatrix(ref modelview);
+                
+                GL.PushMatrix();
+                GL.MultMatrix(ref world);
 
                 //set sprite buffers and texture
-                instance.Sprite.BindTexture();
                 instance.Sprite.BindBuffer();
+                instance.Sprite.BindTexture();             
                
                 //draw the textured quad
                 GL.DrawArrays(BeginMode.Quads, instance.Frame * 4, 4);
+
+                GL.PopMatrix();
             }           
             GL.Disable(EnableCap.VertexArray);
+
+            GL.PopMatrix();
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PopMatrix();
         }
     }
 }

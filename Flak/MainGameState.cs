@@ -27,12 +27,16 @@ namespace Flak
 
         public override void Update()
         {
+            mainPlayer.Update();
             manager.Update();
         }
 
         public override void Draw()
         {
             manager.Draw(mainGame.Spritebatch);
+
+            mainGame.Spritebatch.ApplyViewProjection();
+            mainPlayer.DrawOverlay();
         }
     }
 }
