@@ -8,7 +8,7 @@ using OpenTK.Input;
 
 namespace Flak
 {
-    public class Bullet : Entity
+    class Bullet : Entity
     {
         static Sprite BulletSprite { get; set; }
 
@@ -34,10 +34,10 @@ namespace Flak
         public Bullet(Vector2 position, Vector2 velocity, EntityManager manager)
             :base (manager)
         {
-            float size = (float)random.NextDouble() + 0.1f;
-            if (size < 0.5)
-                size = 0.5f;
-            DrawParams = new SpriteBatch.RenderDetails(BulletSprite, position, 0, Vector2.One*size, 0);
+            float size = (float)random.NextDouble() - 0.1f;
+            if (size < 0.4)
+                size = 0.4f;
+            DrawParams = new SpriteBatch.RenderDetails(BulletSprite, position, 0, Vector2.One*size, 0, 0);
             Velocity = velocity;
             Lifetime = 80;
         }
@@ -46,6 +46,17 @@ namespace Flak
         {
             Position += Velocity;
             Lifetime--;
+        }
+
+        public override void HandleCollision(Entity other)
+        {
+            if (other is Enemy)
+            {
+                Manager.Remove(this);
+                SparkParticle.SparkBurst(3, Position, 3, Manager);
+            }
+            if (other is Debris)
+                Manager.Remove(this);
         }
     }
 }

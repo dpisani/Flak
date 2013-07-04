@@ -7,7 +7,7 @@ using OpenTK;
 
 namespace Flak
 {
-    public class EntityManager
+    class EntityManager
     {
         List<Entity> NewEntities { get; set; }
         List<Entity> RemovedEntities { get; set; }
@@ -26,8 +26,11 @@ namespace Flak
             NewEntities.Clear();
 
             foreach (Entity entity in RemovedEntities)
+            {
+                entity.Dispose();
                 Entities.Remove(entity);
-            NewEntities.Clear();
+            }
+            RemovedEntities.Clear();
 
             foreach (Entity entity in Entities)
                 entity.Update();
@@ -47,7 +50,7 @@ namespace Flak
         public void ManageCollisions()
         {
             for (int i = 0; i < Entities.Count; i++)
-                for (int j = 0; j < Entities.Count; j++)
+                for (int j = i + 1; j < Entities.Count; j++)
                 {
                     //use bounding circle collision
                     Entity a = Entities[i];

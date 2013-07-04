@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Flak
 {
-    public abstract class Entity
+    abstract class Entity
     {
         protected EntityManager Manager { get; set; }
 
@@ -52,5 +52,7 @@ namespace Flak
         }
 
         public virtual void HandleCollision(Entity other) { }
+
+        public virtual void Dispose() { }
     }
 }

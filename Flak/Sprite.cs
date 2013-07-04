@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace Flak
 {
-    public class Sprite : IDisposable
+    class Sprite : IDisposable
     {
         //Texture resource id
         private int texID;
@@ -88,19 +88,20 @@ namespace Flak
         public void AddVertices(int frame)
         {
             int v = frame / HorizontalSegments;
-            int u = frame % VerticalSegments;
+            int u = frame % HorizontalSegments;
 
-            GL.Vertex3(new Vector3(0, 0, 0));
             GL.TexCoord2(new Vector2(USize * u, VSize * v));
+            GL.Vertex3(new Vector3(0, 0, 0));
 
-            GL.Vertex3(new Vector3(Width, 0, 0));
             GL.TexCoord2(new Vector2(USize * (u + 1), VSize * v));
+            GL.Vertex3(new Vector3(Width, 0, 0));
 
-            GL.Vertex3(new Vector3(Width, Height, 0));
             GL.TexCoord2(new Vector2(USize * (u + 1), VSize * (v + 1)));
+            GL.Vertex3(new Vector3(Width, Height, 0));
 
-            GL.Vertex3(new Vector3(0, Height, 0));
             GL.TexCoord2(new Vector2(USize * u, VSize * (v + 1)));
+            GL.Vertex3(new Vector3(0, Height, 0));
+            
 
         }
 

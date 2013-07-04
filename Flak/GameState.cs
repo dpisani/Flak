@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flak
 {
-    public abstract class GameState
+    abstract class GameState
     {
         protected Game mainGame;
 

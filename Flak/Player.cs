@@ -8,32 +8,11 @@ using OpenTK.Input;
 
 namespace Flak
 {
-    public class Player : Entity
+    class Player : Vehicle
     {
         //input devices
         KeyboardDevice keyboard;
         MouseDevice mouse;
-
-        const float mass = 1.5f;
-        const float maxForce = 3.0f;
-        const float maxSpeed = 10.0f;
-        const float friction = 0.95f;
-        Vector2 Velocity { get; set; }
-
-        Vector2 orientation;
-        Vector2 Orientation
-        {
-            get { return orientation; }
-            set
-            {
-                orientation = value;
-                if (orientation.Length > 0)
-                {
-                    DrawParams.Rotation = (float)Math.Atan2(orientation.Y, orientation.X);
-                    orientation = Vector2.Normalize(orientation);
-                }
-            }
-        }
 
         bool IsMousePressed { get; set; }
         bool IsMouseReleased { get; set; }
@@ -67,17 +46,30 @@ namespace Flak
         const float maxAngle = (float)Math.PI * 0.8f;
         const float minAngle = (float)Math.PI * 0.05f;
 
+        float moveForce;
+
+        static Sprite PlayerSprite { get; set; }
+
+        static Player()
+        {
+            Bitmap image = Flak.Properties.Resources.spaceship1;
+            image.MakeTransparent(Color.Red);
+            PlayerSprite = new Sprite(image);
+        }
 
         public Player(Vector2 position, KeyboardDevice keyboard, MouseDevice mouse, EntityManager manager)
-            :base(manager)
-        {
-            DrawParams = new SpriteBatch.RenderDetails(new Sprite(Flak.Properties.Resources.test_sprite), position);
-            DrawParams.Sprite.Center = new Vector2(32, 32);
+            :base(1.5f, 3.0f, 10.0f, 0.05f, manager)
+        {    
+            DrawParams = new SpriteBatch.RenderDetails(PlayerSprite, position);
+            DrawParams.Sprite.Center = new Vector2(20, 14);
+            DrawParams.Depth = 1;
             this.keyboard = keyboard;
             this.mouse = mouse;
 
             mouse.ButtonDown += mouse_ButtonDown;
             mouse.ButtonUp += mouse_ButtonUp;
+
+            moveForce = maxForce - 2;
         }
 
         void mouse_ButtonUp(object sender, MouseButtonEventArgs e)
@@ -113,26 +105,16 @@ namespace Flak
 
             Orientation = Vector2.Normalize(new Vector2(mouse.X, mouse.Y) - Position);
 
-            UpdateMovement(moveDir * maxForce);
-
+            SteeringForce = moveDir * maxForce;
             //update shooting
             UpdateWeapons();
+
+            UpdateMovement();          
         }
 
-        private void UpdateMovement(Vector2 steeringForce)
+        protected override void UpdateMovement()
         {
-            //deceleration
-            Velocity *= friction;
-            if (Velocity.LengthFast < 0.2)
-                Velocity = Vector2.Zero;
-
-            Vector2 acceleration = steeringForce / mass;
-            Velocity += acceleration;
-            if (Velocity.Length > maxSpeed)
-            {
-                Velocity = Vector2.Normalize(Velocity);
-                Velocity *= maxSpeed;
-            }
+            UpdateVelocity();
 
             int[] area = new int[4];
             GL.GetInteger(GetPName.Viewport, area);
@@ -145,6 +127,8 @@ namespace Flak
 
             Position += mov;
         }
+
+        const float recoil = 5.0f;
 
         private void UpdateWeapons()
         {
@@ -161,8 +145,9 @@ namespace Flak
                 {
                     //FIRE!
                     Burst();
+                    SteeringForce += -Orientation * recoil * AngleCharge;
                     AngleCharge = 0;
-                    WeaponCooloff = cooloffPeriod;
+                    WeaponCooloff = cooloffPeriod;                
                 }
             }
 
@@ -179,12 +164,15 @@ namespace Flak
         const float maxBulletSpeed = 17;
         const float minBulletSpeed = 13;
 
-        const float shipLength = 32;
+        const float shipLength = 13;
+
+        const int minBullets = 7;
+        const int maxBullets = 11;
 
         private void Burst()
         {
             float angleRange = maxAngle - (maxAngle - minAngle) * AngleCharge;
-            int numBullets = random.Next(5, 10);
+            int numBullets = random.Next(minBullets, maxBullets);
             for (int i = 0; i < numBullets; i++)
             {
                 double angle = random.NextDouble() * angleRange;

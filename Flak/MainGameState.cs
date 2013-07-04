@@ -10,7 +10,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Flak
 {
-    public class MainGameState : GameState
+    class MainGameState : GameState
     {
         Player mainPlayer;
         EntityManager manager;
@@ -23,6 +23,9 @@ namespace Flak
 
             mainPlayer = new Player(new Vector2(400, 300), mainGame.Keyboard, mainGame.Mouse, manager);
             manager.Add(mainPlayer);
+
+            manager.Add(new SlowEnemy(new Vector2(100, 300), manager, mainPlayer));
+            manager.Add(new SlowEnemy(new Vector2(100, 250), manager, mainPlayer));
         }
 
         public override void Update()

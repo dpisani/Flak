@@ -78,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
+    <Compile Include="Debris.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityManager.cs" />
     <Compile Include="Game.cs" />
@@ -90,8 +92,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SlowEnemy.cs" />
+    <Compile Include="SparkParticle.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteBatch.cs" />
+    <Compile Include="Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -127,7 +132,16 @@
     <None Include="bullet.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="debris.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="spaceship1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="spaceship2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\spark.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

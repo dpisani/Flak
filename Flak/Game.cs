@@ -10,7 +10,7 @@ using OpenTK.Input;
 
 namespace Flak
 {
-    public class Game : GameWindow
+    class Game : GameWindow
     {
         public SpriteBatch Spritebatch { get; set; }
 
