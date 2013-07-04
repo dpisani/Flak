@@ -100,13 +100,13 @@ namespace Flak
 
             //enable texturing
             GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.TextureCoordArray);
+            GL.Disable(EnableCap.TextureCoordArray);
 
             // We haven't uploaded mipmaps, so disable mipmapping (otherwise the texture will not appear).
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
-            GL.Enable(EnableCap.VertexArray);
+            GL.Disable(EnableCap.VertexArray);
         }
 
         public void AddSprite(RenderDetails details)
@@ -136,12 +136,13 @@ namespace Flak
                 GL.PushMatrix();
                 GL.MultMatrix(ref world);
 
-                //set sprite buffers and texture
-                instance.Sprite.BindBuffer();
+                //set sprite buffers and texture             
                 instance.Sprite.BindTexture();             
                
                 //draw the textured quad
-                GL.DrawArrays(BeginMode.Quads, instance.Frame * 4, 4);
+                GL.Begin(BeginMode.Quads);
+                instance.Sprite.AddVertices(instance.Frame);
+                GL.End();
 
                 GL.PopMatrix();
             }           

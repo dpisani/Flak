@@ -11,17 +11,8 @@ namespace Flak
 {
     public class Sprite : IDisposable
     {
-        [StructLayout(LayoutKind.Sequential)]
-        struct Vertex
-        {
-            public Vector3 Position;
-            public Vector2 TexCoord;          
-        }
-
         //Texture resource id
         private int texID;
-        //Vertex buffer id
-        uint VBOid;
 
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -30,10 +21,18 @@ namespace Flak
 
         public int Frames { get; private set; }
 
+        int VerticalSegments { get; set; }
+        int HorizontalSegments { get; set; }
+        float USize { get; set; }
+        float VSize { get; set; }
+
         public Sprite(Bitmap image, Vector2 center, int horizontalSegments, int verticalSegments, int frames)
         {
             if (image == null || verticalSegments <= 0 || horizontalSegments <= 0)
                 throw new ArgumentException();
+
+            HorizontalSegments = horizontalSegments;
+            VerticalSegments = verticalSegments;
 
             Width = image.Width / horizontalSegments;
             Height = image.Height / verticalSegments;
@@ -41,7 +40,7 @@ namespace Flak
             Frames = frames;
             Center = center;
 
-            CreateSpriteResources(image, horizontalSegments, verticalSegments);
+            CreateSpriteResources(image);
         }
 
         public Sprite(Bitmap image)
@@ -55,10 +54,13 @@ namespace Flak
             Frames = 1;
             Center = Vector2.Zero;
 
-            CreateSpriteResources(image, 1, 1);
+            HorizontalSegments = 1;
+            VerticalSegments = 1;
+
+            CreateSpriteResources(image);           
         }
-        uint va;
-        private void CreateSpriteResources(Bitmap image, int horizontalSegments, int verticalSegments)
+
+        private void CreateSpriteResources(Bitmap image)
         {
             //create a new texture
             GL.GenTextures(1, out texID);
@@ -74,34 +76,8 @@ namespace Flak
 
             image.UnlockBits(data);
 
-            //make vertex buffer
-            GL.GenVertexArrays(1, out va);
-            GL.GenBuffers(1, out VBOid);
-            //textured quads, one for each frame
-            float uSize = 1 / (float)horizontalSegments;
-            float vSize = 1 / (float)verticalSegments;
-            Vertex[] vertices = new Vertex[4 * Frames];
-            int i = 0;
-            for (int v = 0; v < verticalSegments; v++)
-                for (int u = 0; u < horizontalSegments && i < Frames; u++, i++)
-                {
-                    vertices[i * 4].Position = new Vector3(0, 0, 0);
-                    vertices[i * 4].TexCoord = new Vector2(uSize * u, vSize * v);
-
-                    vertices[i * 4 + 1].Position = new Vector3(Width, 0, 0);
-                    vertices[i * 4 + 1].TexCoord = new Vector2(uSize * (u + 1), vSize * v);
-
-                    vertices[i * 4 + 2].Position = new Vector3(Width, Height, 0);
-                    vertices[i * 4 + 2].TexCoord = new Vector2(uSize * (u + 1), vSize * (v + 1));
-
-                    vertices[i * 4 + 3].Position = new Vector3(0, Height, 0);
-                    vertices[i * 4 + 3].TexCoord = new Vector2(uSize * u, vSize * (v + 1));
-                }
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBOid);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * 5 * sizeof(float)), vertices, BufferUsageHint.StaticDraw);
-
-            
+            USize = 1 / (float)HorizontalSegments;
+            VSize = 1 / (float)VerticalSegments;
         }
 
         public void BindTexture()
@@ -109,17 +85,28 @@ namespace Flak
             GL.BindTexture(TextureTarget.Texture2D, texID);        
         }
 
-        public void BindBuffer()
+        public void AddVertices(int frame)
         {
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBOid);
-            GL.BindVertexArray(va);
+            int v = frame / HorizontalSegments;
+            int u = frame % VerticalSegments;
+
+            GL.Vertex3(new Vector3(0, 0, 0));
+            GL.TexCoord2(new Vector2(USize * u, VSize * v));
+
+            GL.Vertex3(new Vector3(Width, 0, 0));
+            GL.TexCoord2(new Vector2(USize * (u + 1), VSize * v));
+
+            GL.Vertex3(new Vector3(Width, Height, 0));
+            GL.TexCoord2(new Vector2(USize * (u + 1), VSize * (v + 1)));
+
+            GL.Vertex3(new Vector3(0, Height, 0));
+            GL.TexCoord2(new Vector2(USize * u, VSize * (v + 1)));
+
         }
 
         public void Dispose()
         {
             GL.DeleteTexture(texID);
-            GL.DeleteBuffers(1, ref VBOid);
         }
     }
 }
