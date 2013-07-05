@@ -16,6 +16,7 @@ namespace Flak
             Bitmap image = Flak.Properties.Resources.spark;
             image.MakeTransparent(Color.Red);
             SparkSprite = new Sprite(image);
+            SparkSprite.Center = new Vector2(4, 2);
         }
 
         Vector2 Velocity { get; set; }
@@ -27,7 +28,6 @@ namespace Flak
             Velocity = velocity;
             float angle = (float)Math.Atan2(Velocity.Y, Velocity.X);
             DrawParams = new SpriteBatch.RenderDetails(SparkSprite, position, angle, Vector2.One*0.8f, 1, 0);
-            DrawParams.Sprite.Center = new Vector2(4, 2);
             Lifetime = 10;
         }
 

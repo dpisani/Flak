@@ -25,8 +25,8 @@ namespace Flak
                 orientation = value;
                 if (orientation.Length > 0)
                 {
-                    DrawParams.Rotation = (float)Math.Atan2(orientation.Y, orientation.X);
                     orientation = Vector2.Normalize(orientation);
+                    DrawParams.Rotation = (float)Math.Atan2(orientation.Y, orientation.X);              
                 }
             }
         }

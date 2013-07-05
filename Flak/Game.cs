@@ -34,7 +34,7 @@ namespace Flak
 
             Spritebatch = new SpriteBatch();
 
-            GameState = new MainGameState(this);
+            GameState = new TitleState(this);
         }
 
         /// <summary>
@@ -59,9 +59,6 @@ namespace Flak
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-
-            if (Keyboard[Key.Escape])
-                Exit();
 
             GameState.Update();
         }
@@ -95,6 +92,11 @@ namespace Flak
             {
                 game.Run(30.0);
             }
+        }
+
+        public void SwitchState(GameState state)
+        {
+            GameState = state;
         }
     }
 }

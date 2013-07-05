@@ -78,6 +78,8 @@ namespace Flak
 
             USize = 1 / (float)HorizontalSegments;
             VSize = 1 / (float)VerticalSegments;
+
+            GL.Flush();
         }
 
         public void BindTexture()

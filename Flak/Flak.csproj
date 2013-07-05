@@ -78,13 +78,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
+    <Compile Include="ComboPopup.cs" />
     <Compile Include="Debris.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityManager.cs" />
+    <Compile Include="FastEnemy.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="HeavyEnemy.cs" />
+    <Compile Include="HighScoreTable.cs" />
+    <Compile Include="LightEnemy.cs" />
     <Compile Include="MainGameState.cs" />
+    <Compile Include="Missile.cs" />
+    <Compile Include="NumberPopUp.cs" />
+    <Compile Include="NumberWriter.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -96,6 +104,7 @@
     <Compile Include="SparkParticle.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteBatch.cs" />
+    <Compile Include="TitleState.cs" />
     <Compile Include="Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +118,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Flak_TemporaryKey.pfx" />
-    <None Include="test sprite.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -142,6 +150,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\spark.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="missile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="title.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="digits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="score.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="spaceship3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="spaceship4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="highscore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="spaceship5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="latest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="combo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

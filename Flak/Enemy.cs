@@ -17,16 +17,26 @@ namespace Flak
 
         public Player Target { get; set; }
 
+        protected int fireRate;
+        int FireCountdown { get; set; }
+        protected const float missileSpeed = 10.0f;
+
+        MainGameState mainGame;
+
+        public int KillBonus { get; protected set; }
+
         static Enemy()
         {
             Bretheren = new List<Enemy>();
         }
 
-        protected Enemy(float mass, float maxForce, float maxSpeed, float friction, EntityManager manager, Player target)
+        protected Enemy(float mass, float maxForce, float maxSpeed, float friction, EntityManager manager, Player target, MainGameState mainGame)
             : base(mass, maxForce, maxSpeed, friction, manager)
         {
             Bretheren.Add(this);
             Target = target;
+            FireCountdown = random.Next(100, 200);
+            this.mainGame = mainGame;
         }
 
         public override void HandleCollision(Entity other)
@@ -34,19 +44,20 @@ namespace Flak
             if (other is Bullet)
                 Health -= 1;
             if (other is Debris)
-                Health -= 3;
+                Health -= 4;
         }
 
-        const int sparks = 20;
-        const int minDebris = 4;
-        const int maxDebris = 6;
+        protected int sparks = 20;
+        protected int minDebris = 4;
+        protected int maxDebris = 6;
 
         public virtual void Explode()
         {
             Manager.Remove(this);
-
+            mainGame.ReportKill(this);
             SparkParticle.SparkBurst(sparks, Position, 5, Manager);
             DebrisBurst(random.Next(minDebris, maxDebris));
+            Dispose();
         }
 
         public override void Update()
@@ -62,6 +73,18 @@ namespace Flak
             UpdateSteeringForce();
             UpdateVelocity();
             UpdateMovement();
+            UpdateWeapons();
+        }
+
+        void UpdateWeapons()
+        {
+            FireCountdown--;
+
+            if (FireCountdown == 0)
+            {
+                FireCountdown = fireRate;
+                Fire();
+            }
         }
 
         public virtual void UpdateSteeringForce()
@@ -71,10 +94,13 @@ namespace Flak
 
         public override void Dispose()
         {
+            base.Dispose();
             Bretheren.Remove(this);
+            mainGame = null;
+            Target = null;
         }
 
-        protected float separationDistance = 100;
+        protected float separationDistance = 60;
 
         protected Vector2 GetSeparativeForce()
         {
@@ -126,5 +152,7 @@ namespace Flak
 
             return force + v*strafeSpeed;
         }
+
+        protected abstract void Fire();
     }
 }

@@ -8,7 +8,7 @@ namespace Flak
 {
     abstract class GameState
     {
-        protected Game mainGame;
+        public Game mainGame;
 
         public GameState(Game mainWindow)
         {

@@ -76,6 +76,9 @@ namespace Flak
 
         public void Clear()
         {
+            foreach (Entity e in Entities)
+                e.Dispose();
+
             Entities.Clear();
         }
     }

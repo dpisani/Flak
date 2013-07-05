@@ -43,8 +43,11 @@ namespace Flak
 
         public bool DoesCollide(Entity other)
         {
-            float rad = Math.Max(DrawParams.Sprite.Height, DrawParams.Sprite.Width);
-            float orad = Math.Max(other.DrawParams.Sprite.Height, other.DrawParams.Sprite.Width);
+            if (DrawParams == null || other.DrawParams == null)
+                return false;
+
+            float rad = Math.Max(DrawParams.Sprite.Height, DrawParams.Sprite.Width) / 2.0f;
+            float orad = Math.Max(other.DrawParams.Sprite.Height, other.DrawParams.Sprite.Width) / 2.0f;
 
             float distance = (Position - other.Position).Length;
 
@@ -53,6 +56,9 @@ namespace Flak
 
         public virtual void HandleCollision(Entity other) { }
 
-        public virtual void Dispose() { }
+        public virtual void Dispose()
+        {
+            Manager = null;
+        }
     }
 }

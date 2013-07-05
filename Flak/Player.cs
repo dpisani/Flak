@@ -50,18 +50,20 @@ namespace Flak
 
         static Sprite PlayerSprite { get; set; }
 
+        MainGameState game;
+
         static Player()
         {
             Bitmap image = Flak.Properties.Resources.spaceship1;
             image.MakeTransparent(Color.Red);
             PlayerSprite = new Sprite(image);
-        }
+            PlayerSprite.Center = new Vector2(20, 14);
+        }     
 
-        public Player(Vector2 position, KeyboardDevice keyboard, MouseDevice mouse, EntityManager manager)
-            :base(1.5f, 3.0f, 10.0f, 0.05f, manager)
+        public Player(Vector2 position, KeyboardDevice keyboard, MouseDevice mouse, EntityManager manager, MainGameState game)
+            :base(1.5f, 5.0f, 10.0f, 0.09f, manager)
         {    
             DrawParams = new SpriteBatch.RenderDetails(PlayerSprite, position);
-            DrawParams.Sprite.Center = new Vector2(20, 14);
             DrawParams.Depth = 1;
             this.keyboard = keyboard;
             this.mouse = mouse;
@@ -70,6 +72,10 @@ namespace Flak
             mouse.ButtonUp += mouse_ButtonUp;
 
             moveForce = maxForce - 2;
+
+            WeaponCooloff = 20;
+
+            this.game = game;
         }
 
         void mouse_ButtonUp(object sender, MouseButtonEventArgs e)
@@ -155,7 +161,7 @@ namespace Flak
             if (IsMousePressed && WeaponCooloff == 0)
             {
                 //charge the weapon
-                AngleCharge += 0.05f;
+                AngleCharge += 0.08f;
             }
             else
                 AngleCharge = 0;
@@ -193,12 +199,18 @@ namespace Flak
         static float arcDrawRad = 100.0f;
         static int arcDrawSegments = 10;
 
+        public override void Draw(SpriteBatch spritebatch)
+        {
+            base.Draw(spritebatch);          
+        }
+
         public void DrawOverlay()
         {
             if (AngleCharge == 0)
                 return;
 
             GL.Disable(EnableCap.Texture2D);
+            GL.AlphaFunc(AlphaFunction.Greater, 0.3f);
 
             //draw the weapon angle         
             Vector2 center = Position + Orientation * shipLength;
@@ -219,6 +231,21 @@ namespace Flak
             GL.End();
 
             GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+
+        public override void HandleCollision(Entity other)
+        {
+            if (other is Missile || other is Debris || other is Enemy)
+            {
+                Destroy();
+                game.EndGame();
+            }
+        }
+
+        public void Destroy()
+        {
+            Manager.Remove(this);
+            SparkParticle.SparkBurst(20, Position, 10, Manager);
         }
     }
 }

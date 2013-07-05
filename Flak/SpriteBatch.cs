@@ -104,7 +104,7 @@ namespace Flak
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
-            GL.AlphaFunc(AlphaFunction.Greater, 0.2f);
+            GL.AlphaFunc(AlphaFunction.Greater, 0.5f);
             GL.Enable(EnableCap.AlphaTest);
         }
 

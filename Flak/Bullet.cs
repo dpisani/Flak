@@ -55,7 +55,7 @@ namespace Flak
                 Manager.Remove(this);
                 SparkParticle.SparkBurst(3, Position, 3, Manager);
             }
-            if (other is Debris)
+            if (other is Debris || other is Missile)
                 Manager.Remove(this);
         }
     }
