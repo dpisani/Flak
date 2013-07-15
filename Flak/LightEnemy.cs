@@ -28,7 +28,7 @@ namespace Flak
             DrawParams = new SpriteBatch.RenderDetails(SlowEnemySprite, position);
 
             Health = 1;
-            fireRate = 350;
+            fireRate = 200;
             this.targetRadius = targetRadius;
             KillBonus = 10;
 

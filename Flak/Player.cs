@@ -45,8 +45,16 @@ namespace Flak
         }
         const float maxAngle = (float)Math.PI * 0.8f;
         const float minAngle = (float)Math.PI * 0.05f;
+        const float chargeSpeed = 0.08f;
 
         float moveForce;
+
+        const int powerupTime = 300;
+        public int ReinforceTimer { get; set; }
+        const int reinforceAmount = 12;
+        public int SpeedupTimer { get; set; }
+        const float speedupAmount = 0.15f;
+        const int cooloffReduce = 10;
 
         static Sprite PlayerSprite { get; set; }
 
@@ -115,7 +123,13 @@ namespace Flak
             //update shooting
             UpdateWeapons();
 
-            UpdateMovement();          
+            UpdateMovement();
+
+            if (ReinforceTimer > 0)
+                ReinforceTimer--;
+
+            if (SpeedupTimer > 0)
+                SpeedupTimer--;
         }
 
         protected override void UpdateMovement()
@@ -153,7 +167,9 @@ namespace Flak
                     Burst();
                     SteeringForce += -Orientation * recoil * AngleCharge;
                     AngleCharge = 0;
-                    WeaponCooloff = cooloffPeriod;                
+                    WeaponCooloff = cooloffPeriod;
+                    if (SpeedupTimer > 0)
+                        WeaponCooloff -= cooloffReduce;
                 }
             }
 
@@ -161,7 +177,9 @@ namespace Flak
             if (IsMousePressed && WeaponCooloff == 0)
             {
                 //charge the weapon
-                AngleCharge += 0.08f;
+                AngleCharge += chargeSpeed;
+                if (SpeedupTimer > 0)
+                    AngleCharge += speedupAmount;
             }
             else
                 AngleCharge = 0;
@@ -179,6 +197,10 @@ namespace Flak
         {
             float angleRange = maxAngle - (maxAngle - minAngle) * AngleCharge;
             int numBullets = random.Next(minBullets, maxBullets);
+
+            if (ReinforceTimer > 0)
+                numBullets += reinforceAmount;
+
             for (int i = 0; i < numBullets; i++)
             {
                 double angle = random.NextDouble() * angleRange;
@@ -194,6 +216,8 @@ namespace Flak
                 //make bullet
                 Manager.Add(new Bullet(Position + Orientation*shipLength, dir*speed, Manager));
             }
+
+            AudioManager.Manager().PlayPhaser();
         }
 
         static float arcDrawRad = 100.0f;
@@ -240,12 +264,17 @@ namespace Flak
                 Destroy();
                 game.EndGame();
             }
+            else if (other is ReinforcePowerup)
+                ReinforceTimer = powerupTime;
+            else if (other is SpeedupPowerup)
+                SpeedupTimer = powerupTime;
         }
 
         public void Destroy()
         {
             Manager.Remove(this);
             SparkParticle.SparkBurst(20, Position, 10, Manager);
+            AudioManager.Manager().PlayBoom();
         }
     }
 }

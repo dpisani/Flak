@@ -22,6 +22,7 @@ namespace Flak
         {
             VSync = VSyncMode.On;
             this.WindowBorder = OpenTK.WindowBorder.Fixed;
+            GL.Viewport(0, 0, 800, 600);
         }
 
         /// <summary>Load resources here.</summary>
@@ -35,6 +36,9 @@ namespace Flak
             Spritebatch = new SpriteBatch();
 
             GameState = new TitleState(this);
+
+            AudioManager.Initialize();
+            AudioManager.Manager().PlayMusic();
         }
 
         /// <summary>

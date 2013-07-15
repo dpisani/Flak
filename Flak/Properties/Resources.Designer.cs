@@ -61,6 +61,26 @@ namespace Flak.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Boom_1 {
+            get {
+                object obj = ResourceManager.GetObject("Boom_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Bounce {
+            get {
+                object obj = ResourceManager.GetObject("Bounce", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap bullet {
@@ -101,6 +121,26 @@ namespace Flak.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] explode {
+            get {
+                object obj = ResourceManager.GetObject("explode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] explode2 {
+            get {
+                object obj = ResourceManager.GetObject("explode2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap highscore {
@@ -136,6 +176,36 @@ namespace Flak.Properties {
         internal static System.Drawing.Bitmap missile {
             get {
                 object obj = ResourceManager.GetObject("missile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] phaser {
+            get {
+                object obj = ResourceManager.GetObject("phaser", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reinforce {
+            get {
+                object obj = ResourceManager.GetObject("reinforce", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reinforceicon {
+            get {
+                object obj = ResourceManager.GetObject("reinforceicon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -206,6 +276,26 @@ namespace Flak.Properties {
         internal static System.Drawing.Bitmap spark {
             get {
                 object obj = ResourceManager.GetObject("spark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap speedup {
+            get {
+                object obj = ResourceManager.GetObject("speedup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap speedupicon {
+            get {
+                object obj = ResourceManager.GetObject("speedupicon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

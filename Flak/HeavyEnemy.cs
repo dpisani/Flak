@@ -29,8 +29,8 @@ namespace Flak
         {
             DrawParams = new SpriteBatch.RenderDetails(HeavyEnemySprite, position);
 
-            Health = 15;
-            fireRate = 150;
+            Health = 10;
+            fireRate = 220;
             this.targetRadius = targetRadius;
             KillBonus = 75;
 
@@ -44,7 +44,7 @@ namespace Flak
         {
             SteeringForce = GetSeparativeForce();
             if (SteeringForce.LengthFast <= maxForce*0.5f)
-                SteeringForce += GetStrafeForce(targetRadius, 5, -0.5f);
+                SteeringForce += GetStrafeForce(targetRadius, 5, -0.9f);
         }
 
         bool fireLeft = true;

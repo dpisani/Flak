@@ -41,8 +41,17 @@ namespace Flak
         static Sprite LevelSprite { get; set; }
         static SpriteBatch.RenderDetails LevelRenderInfo { get; set; }
 
+        static Sprite ReinforceIconSprite { get; set; }
+        static SpriteBatch.RenderDetails ReinforceIconInfo { get; set; }
+
+        static Sprite SpeedupIconSprite { get; set; }
+        static SpriteBatch.RenderDetails SpeedupIconInfo { get; set; }
+
         static MainGameState()
         {
+            int[] area = new int[4];
+            GL.GetInteger(GetPName.Viewport, area);
+
             Bitmap image = Flak.Properties.Resources.score;
             image.MakeTransparent(Color.Red);
 
@@ -56,6 +65,20 @@ namespace Flak
             LevelSprite = new Sprite(image2);
             LevelRenderInfo = new SpriteBatch.RenderDetails(LevelSprite, new Vector2(450, 30));
             LevelRenderInfo.Depth = 3;
+
+            Bitmap image3 = Flak.Properties.Resources.reinforceicon;
+            image3.MakeTransparent(Color.Red);
+
+            ReinforceIconSprite = new Sprite(image3);
+            ReinforceIconInfo = new SpriteBatch.RenderDetails(ReinforceIconSprite, new Vector2(20, 550));
+            ReinforceIconInfo.Depth = 3;
+
+            Bitmap image4 = Flak.Properties.Resources.speedupicon;
+            image4.MakeTransparent(Color.Red);
+
+            SpeedupIconSprite = new Sprite(image4);
+            SpeedupIconInfo = new SpriteBatch.RenderDetails(SpeedupIconSprite, new Vector2(400, 550));
+            SpeedupIconInfo.Depth = 3;
         }
 
         public MainGameState(Game mainWindow)
@@ -139,6 +162,33 @@ namespace Flak
                 NumberWriter.Print(Level, new Vector2(527, 32), 0.9f, mainGame.Spritebatch);
                 mainGame.Spritebatch.AddSprite(LevelRenderInfo);
                 mainGame.Spritebatch.Draw();
+
+                GL.Disable(EnableCap.Texture2D);
+                GL.Begin(BeginMode.Quads);
+                GL.Vertex3(60, 550, 2);
+                GL.Vertex3(60 + mainPlayer.ReinforceTimer, 550, 2);
+                GL.Vertex3(60 + mainPlayer.ReinforceTimer, 582, 2);
+                GL.Vertex3(60, 582, 2);
+                GL.End();
+
+                GL.Begin(BeginMode.Quads);
+                GL.Vertex3(440, 550, 2);
+                GL.Vertex3(440 + mainPlayer.SpeedupTimer, 550, 2);
+                GL.Vertex3(440 + mainPlayer.SpeedupTimer, 582, 2);
+                GL.Vertex3(440, 582, 2);
+                GL.End();
+
+                if (mainPlayer.ReinforceTimer > 0)
+                {
+                    mainGame.Spritebatch.AddSprite(ReinforceIconInfo);
+                    mainGame.Spritebatch.Draw();
+                }
+
+                if (mainPlayer.SpeedupTimer > 0)
+                {
+                    mainGame.Spritebatch.AddSprite(SpeedupIconInfo);
+                    mainGame.Spritebatch.Draw();
+                }
             }
         }
 

@@ -56,7 +56,27 @@ namespace Flak
             Manager.Remove(this);
             mainGame.ReportKill(this);
             SparkParticle.SparkBurst(sparks, Position, 5, Manager);
-            DebrisBurst(random.Next(minDebris, maxDebris));
+            DebrisBurst(random.Next(minDebris, maxDebris));     
+
+            //chance of powerup drop 1/15 chance
+            if (random.Next(15) == 0)
+            {
+                if (random.Next(2) == 0)
+                    Manager.Add(new ReinforcePowerup(Position-Vector2.One*16, Manager));
+                else
+                    Manager.Add(new SpeedupPowerup(Position-Vector2.One*16, Manager));
+            }
+
+            switch (random.Next(2))
+            {
+                case 0:
+                    AudioManager.Manager().PlayExplosion1();
+                    break;
+                case 1:
+                    AudioManager.Manager().PlayExplosion2();
+                    break;
+            }
+
             Dispose();
         }
 

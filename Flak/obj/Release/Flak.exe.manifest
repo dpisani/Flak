@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Flak.exe" size="49152">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Flak.exe" size="6918656">
       <assemblyIdentity name="Flak" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YeBEul8BjVm9F12BpwI4jt6LBrHo1ljRJVoVJF/UF0w=</dsig:DigestValue>
+        <dsig:DigestValue>Nlb2ka8b/+HVrM7F5fxKHV9HUb2VomMnSPyEWPWwCRw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
